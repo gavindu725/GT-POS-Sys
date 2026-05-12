@@ -5,11 +5,11 @@ import con from "../config/db.config.js";
 export const getProducts = async (req, res) => {
   try {
     const [products] = await con.query(`
-      SELECT p.id, p.category_id, p.brand_id, p.name, p.sku, p.barcode, p.description,
+            SELECT p.id, p.category_id, p.brand_id, p.name, p.sku, p.barcode, p.description,
              p.cost_price, p.selling_price,
              -- If product has variants, prefer sum of variant stock; otherwise use product stock_quantity
              COALESCE(SUM(v.stock_quantity), p.stock_quantity) AS stock_quantity,
-             p.reorder_level, p.image_url, p.status, p.created_at, p.updated_at,
+              p.is_serialized, p.reorder_level, p.image_url, p.status, p.created_at, p.updated_at,
              c.name AS category_name, b.name AS brand_name,
              COUNT(v.id) AS variant_count
       FROM products p
@@ -73,6 +73,7 @@ export const createProduct = async (req, res) => {
       cost_price,
       selling_price,
       stock_quantity,
+      is_serialized,
       reorder_level,
       image_url,
       status,
@@ -82,8 +83,8 @@ export const createProduct = async (req, res) => {
 
     const [result] = await conn.query(
       `INSERT INTO products (category_id, brand_id, name, sku, barcode, description,
-        cost_price, selling_price, stock_quantity, reorder_level, image_url, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        cost_price, selling_price, stock_quantity, is_serialized, reorder_level, image_url, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         category_id,
         brand_id || null,
@@ -94,6 +95,7 @@ export const createProduct = async (req, res) => {
         cost_price || 0,
         selling_price || 0,
         stock_quantity || 0,
+        Number(is_serialized) ? 1 : 0,
         reorder_level || 0,
         image_url || null,
         status || "active",
@@ -169,6 +171,7 @@ export const updateProduct = async (req, res) => {
       cost_price,
       selling_price,
       stock_quantity,
+      is_serialized,
       reorder_level,
       image_url,
       status,
@@ -185,7 +188,7 @@ export const updateProduct = async (req, res) => {
     await conn.query(
       `UPDATE products SET category_id=?, brand_id=?, name=?, sku=?, barcode=?,
         description=?, cost_price=?, selling_price=?, stock_quantity=?,
-        reorder_level=?, image_url=?, status=? WHERE id=?`,
+        is_serialized=?, reorder_level=?, image_url=?, status=? WHERE id=?`,
       [
         category_id,
         brand_id || null,
@@ -196,6 +199,7 @@ export const updateProduct = async (req, res) => {
         cost_price,
         selling_price,
         stock_quantity,
+        Number(is_serialized) ? 1 : 0,
         reorder_level,
         image_url || null,
         status,
@@ -365,12 +369,10 @@ export const deleteCategory = async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     if (err.code === "ER_ROW_IS_REFERENCED_2")
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error: "Category is used by existing products",
-        });
+      return res.status(400).json({
+        success: false,
+        error: "Category is used by existing products",
+      });
     res.status(500).json({ success: false, error: err.message });
   }
 };
@@ -502,12 +504,10 @@ export const deleteAttribute = async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     if (err.code === "ER_ROW_IS_REFERENCED_2")
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error: "Attribute is used by categories or products",
-        });
+      return res.status(400).json({
+        success: false,
+        error: "Attribute is used by categories or products",
+      });
     res.status(500).json({ success: false, error: err.message });
   }
 };
@@ -543,12 +543,10 @@ export const addCategoryAttribute = async (req, res) => {
     res.json({ success: true, id: r.insertId });
   } catch (err) {
     if (err.code === "ER_DUP_ENTRY")
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error: "Attribute already linked to this category",
-        });
+      return res.status(400).json({
+        success: false,
+        error: "Attribute already linked to this category",
+      });
     res.status(500).json({ success: false, error: err.message });
   }
 };
@@ -602,15 +600,29 @@ export const generateSku = async (req, res) => {
     // Get category prefix (first 3 letters, uppercase)
     let catPrefix = "PRD";
     if (category_id) {
-      const [[cat]] = await con.query("SELECT name FROM categories WHERE id = ?", [category_id]);
-      if (cat) catPrefix = cat.name.replace(/[^a-zA-Z0-9]/g, "").substring(0, 3).toUpperCase();
+      const [[cat]] = await con.query(
+        "SELECT name FROM categories WHERE id = ?",
+        [category_id],
+      );
+      if (cat)
+        catPrefix = cat.name
+          .replace(/[^a-zA-Z0-9]/g, "")
+          .substring(0, 3)
+          .toUpperCase();
     }
 
     // Get brand prefix (first 3 letters, uppercase)
     let brandPrefix = "";
     if (brand_id) {
-      const [[brand]] = await con.query("SELECT name FROM brands WHERE id = ?", [brand_id]);
-      if (brand) brandPrefix = brand.name.replace(/[^a-zA-Z0-9]/g, "").substring(0, 3).toUpperCase();
+      const [[brand]] = await con.query(
+        "SELECT name FROM brands WHERE id = ?",
+        [brand_id],
+      );
+      if (brand)
+        brandPrefix = brand.name
+          .replace(/[^a-zA-Z0-9]/g, "")
+          .substring(0, 3)
+          .toUpperCase();
     }
 
     // Build prefix: BRAND-CAT or just CAT
@@ -619,7 +631,7 @@ export const generateSku = async (req, res) => {
     // Find highest existing sequence for this prefix
     const [rows] = await con.query(
       "SELECT sku FROM products WHERE sku LIKE ? ORDER BY sku DESC LIMIT 50",
-      [`${prefix}-%`]
+      [`${prefix}-%`],
     );
 
     let maxSeq = 0;

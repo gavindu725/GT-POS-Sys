@@ -106,6 +106,30 @@ async function ensureAdminTable(connection) {
     await connection.query(SYSTEM_SETTINGS_INSERT_SQL);
     console.log("✓ System settings table created\n");
   }
+
+  const [purchaseStatusColumn] = await connection.query(
+    "SELECT COUNT(*) as count FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'purchases' AND COLUMN_NAME = 'status'",
+    [DB_CONFIG.database],
+  );
+
+  if (purchaseStatusColumn[0].count === 0) {
+    await connection.query(
+      "ALTER TABLE purchases ADD COLUMN status enum('active','canceled') NOT NULL DEFAULT 'active' AFTER created_at",
+    );
+    console.log("✓ Purchases status column added\n");
+  }
+
+  const [serializedColumn] = await connection.query(
+    "SELECT COUNT(*) as count FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'products' AND COLUMN_NAME = 'is_serialized'",
+    [DB_CONFIG.database],
+  );
+
+  if (serializedColumn[0].count === 0) {
+    await connection.query(
+      "ALTER TABLE products ADD COLUMN is_serialized tinyint(1) NOT NULL DEFAULT 0 AFTER stock_quantity",
+    );
+    console.log("✓ Products serialized column added\n");
+  }
 }
 
 /**

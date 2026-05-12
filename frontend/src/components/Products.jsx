@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -75,6 +76,7 @@ const EMPTY_FORM = {
   stock_quantity: "0",
   reorder_level: "0",
   status: "active",
+  is_serialized: false,
   attributes: [],
   variants: [],
 };
@@ -167,6 +169,7 @@ export default function Products() {
       stock_quantity: product.stock_quantity?.toString() ?? "0",
       reorder_level: product.reorder_level?.toString() ?? "0",
       status: product.status ?? "active",
+      is_serialized: !!product.is_serialized,
       attributes: [],
       variants: [],
     });
@@ -286,6 +289,7 @@ export default function Products() {
       selling_price: parseFloat(form.selling_price) || 0,
       stock_quantity: parseInt(form.stock_quantity) || 0,
       reorder_level: parseInt(form.reorder_level) || 0,
+      is_serialized: !!form.is_serialized,
       barcode: form.barcode.trim() || null,
       variants: form.variants.map((v) => ({
         ...v,
@@ -591,6 +595,25 @@ export default function Products() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                <div className="space-y-1 col-span-2 flex items-center justify-between rounded-md border px-3 py-2">
+                  <div className="space-y-0.5">
+                    <Label className="text-sm">Serialized product</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Track unique serial numbers instead of loose stock.
+                    </p>
+                  </div>
+                  <Checkbox
+                    checked={!!form.is_serialized}
+                    onCheckedChange={(checked) => {
+                      const nextValue = !!checked;
+                      setField("is_serialized", nextValue);
+                      if (nextValue && !editId) {
+                        setField("stock_quantity", "0");
+                      }
+                    }}
+                  />
+                </div>
               </div>
             </section>
 
@@ -637,9 +660,14 @@ export default function Products() {
                     min="0"
                     value={form.stock_quantity}
                     onChange={(e) => setField("stock_quantity", e.target.value)}
-                    disabled={form.variants.length > 0}
+                    disabled={form.variants.length > 0 || form.is_serialized}
                   />
-                  {form.variants.length > 0 ? (
+                  {form.is_serialized ? (
+                    <p className="text-xs text-muted-foreground">
+                      Stock is managed from serial numbers entered during
+                      purchases.
+                    </p>
+                  ) : form.variants.length > 0 ? (
                     <p className="text-xs text-muted-foreground">
                       Stock is managed per-variant when variants exist
                     </p>

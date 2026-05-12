@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { LayoutDashboard, Package, Settings, Truck, Zap } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  Settings,
+  ShoppingCart,
+  Truck,
+  Zap,
+} from "lucide-react";
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -19,6 +26,7 @@ import { API_URL } from "@/lib/api";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Package, label: "Products", href: "/products" },
+  { icon: ShoppingCart, label: "Purchases", href: "/purchases" },
   { icon: Truck, label: "Suppliers", href: "/suppliers" },
 ];
 

@@ -305,6 +305,7 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `purchase_date` date DEFAULT NULL,
   `created_by` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('active','canceled') DEFAULT 'active',
   PRIMARY KEY (`id`),
   UNIQUE KEY `invoice_no` (`invoice_no`),
   KEY `fk_purchase_supplier` (`supplier_id`),

@@ -5,6 +5,7 @@ import "dotenv/config";
 import { adminRouter } from "./routers/Admin.route.js";
 import productRouter from "./routers/product.Route.js";
 import supplierRouter from "./routers/supplier.Route.js";
+import purchaseRouter from "./routers/purchase.Route.js";
 import settingsRouter from "./routers/settings.Route.js";
 import autoInitialize from "./db/auto-init.js";
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use("/auth", adminRouter);
 app.use("/products", productRouter);
 app.use("/suppliers", supplierRouter);
+app.use("/purchases", purchaseRouter);
 app.use("/settings", settingsRouter);
 
 app.get("/api/health", (req, res) => {
