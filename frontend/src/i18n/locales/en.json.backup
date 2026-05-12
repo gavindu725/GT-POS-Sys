@@ -1,0 +1,98 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "employees": "Employees",
+    "promotion": "Promotion",
+    "efficiency": "Efficiency",
+    "salaryStatus": "Salary Status",
+    "additionalInfo": "Additional Info",
+    "inquiries": "Inquiries",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back! Here's an overview of your system.",
+    "stats": {
+      "employees": "Total Employees",
+      "jobRoles": "Job Roles",
+      "documents": "Documents",
+      "administrators": "Administrators",
+      "systemAccess": "System access",
+      "uploadedFiles": "Uploaded files",
+      "definedPositions": "Defined positions",
+      "totalRecords": "Active workforce"
+    },
+    "charts": {
+      "employeesJoined": "Employees Joined Over Time",
+      "monthlyJoined": "Monthly employees joined by job role",
+      "genderDistribution": "Employee Distribution by Role & Gender",
+      "countByRole": "Employee count by job role with gender breakdown",
+      "classDistribution": "Employees by Class",
+      "totalEmployees": "Total Employees",
+      "classWiseBreakdown": "Class-wise employee breakdown with salary scales"
+    },
+    "lists": {
+      "recentEmployees": "Recent Employees",
+      "upcomingRetirements": "Upcoming Retirements",
+      "promotions": "Promotions",
+      "promotionsDesc": "Employees who got promoted",
+      "salaryIncrements": "Salary Increments",
+      "salaryIncrementsDesc": "Employees due for increment",
+      "promotedEmployees": "Employees who got promoted",
+      "incrementDue": "Employees due for increment",
+      "noRecentEmployees": "No recent employees",
+      "noRetirements": "No retirements in the next 6 months",
+      "noPromotions": "No promotions in this period",
+      "noIncrements": "No increments due in this period",
+      "noRegistrationData": "No registration data available",
+      "noGenderData": "No gender data available",
+      "noClassData": "No class data available",
+      "addedOn": "Added",
+      "retires": "Retires"
+    },
+    "timeRange": {
+      "last3Months": "Last 3 months",
+      "last6Months": "Last 6 months",
+      "thisYear": "This year",
+      "allTime": "All time",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "last3MonthsShort": "Last 3 Months",
+      "last6MonthsShort": "Last 6 Months"
+    },
+    "badges": {
+      "new": "New",
+      "promoted": "Promoted",
+      "days": "days",
+      "year": "Year"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "close": "Close",
+    "selectRange": "Select range",
+    "male": "Male",
+    "female": "Female"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "selectLanguage": "Select Language",
+    "english": "English",
+    "sinhala": "සිංහල (Sinhala)"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "sidebar": {
+    "dashboard": "උපකරණ පුවරුව",
+    "employees": "සේවකයින්",
+    "promotion": "උසස්වීම්",
+    "efficiency": "කාර්යක්ෂමතාව",
+    "salaryStatus": "වැටුප් තත්ත්වය",
+    "additionalInfo": "අතිරේක තොරතුරු",
+    "inquiries": "විමර්ශන",
+    "reports": "වාර්තා",
+    "settings": "සැකසුම්"
+  },
+  "dashboard": {
+    "title": "උපකරණ පුවරුව",
+    "welcome": "නැවත සාදරයෙන් පිළිගනිමු! මෙන්න ඔබේ පද්ධතියේ දළ විශ්ලේෂණයකි.",
+    "stats": {
+      "employees": "මුළු සේවකයින්",
+      "jobRoles": "රැකියා භූමිකා",
+      "documents": "ලේඛන",
+      "administrators": "පරිපාලකයින්",
+      "systemAccess": "පද්ධති ප්‍රවේශය",
+      "uploadedFiles": "උඩුගත කළ ගොනු",
+      "definedPositions": "නිර්වචනය කළ තනතුරු",
+      "totalRecords": "ක්‍රියාකාරී ශ්‍රම බලකාය"
+    },
+    "charts": {
+      "employeesJoined": "කාලය අනුව සම්බන්ධ වූ සේවකයින්",
+      "monthlyJoined": "රැකියා භූමිකාව අනුව මාසික සම්බන්ධ වූ සේවකයින්",
+      "genderDistribution": "භූමිකාව සහ ස්ත්‍රී පුරුෂ භාවය අනුව සේවක බෙදාහැරීම",
+      "countByRole": "ස්ත්‍රී පුරුෂ භාවය සමඟ රැකියා භූමිකාව අනුව සේවක ගණන",
+      "classDistribution": "පන්තිය අනුව සේවකයින්",
+      "totalEmployees": "සමස්ත සේවකයින්",
+      "classWiseBreakdown": "වැටුප් පරිමාණ සමඟ පන්ති අනුව සේවක බෙදා හැරීම"
+    },
+    "lists": {
+      "recentEmployees": "මෑත සේවකයින්",
+      "upcomingRetirements": "ඉදිරි විශ්‍රාම",
+      "promotions": "උසස්වීම්",
+      "promotionsDesc": "උසස්වීම් ලබා ගත් සේවකයින්",
+      "salaryIncrements": "වැටුප් වැඩිවීම්",
+      "salaryIncrementsDesc": "වැඩිවීමට නියමිත සේවකයින්",
+      "promotedEmployees": "උසස්වීම් ලබා ගත් සේවකයින්",
+      "incrementDue": "වැඩිවීමට නියමිත සේවකයින්",
+      "noRecentEmployees": "මෑත සේවකයින් නැත",
+      "noRetirements": "ඉදිරි මාස 6 තුළ විශ්‍රාම නැත",
+      "noPromotions": "මෙම කාල පරිච්ඡේදය තුළ උසස්වීම් නැත",
+      "noIncrements": "මෙම කාල පරිච්ඡේදය තුළ වැඩිවීම් නියමිත නැත",
+      "noRegistrationData": "ලියාපදිංචි දත්ත නොමැත",
+      "noGenderData": "ස්ත්‍රී පුරුෂ දත්ත නොමැත",
+      "noClassData": "පන්ති දත්ත නොමැත",
+      "addedOn": "එකතු කළා",
+      "retires": "විශ්‍රාම යනවා"
+    },
+    "timeRange": {
+      "last3Months": "පසුගිය මාස 3",
+      "last6Months": "පසුගිය මාස 6",
+      "thisYear": "මෙම වර්ෂය",
+      "allTime": "සියලු කාලය",
+      "today": "අද",
+      "thisWeek": "මෙම සතිය",
+      "thisMonth": "මෙම මාසය",
+      "last3MonthsShort": "පසුගිය මාස 3",
+      "last6MonthsShort": "පසුගිය මාස 6"
+    },
+    "badges": {
+      "new": "නව",
+      "promoted": "උසස් කළා",
+      "days": "දින",
+      "year": "වර්ෂය"
+    }
+  },
+  "common": {
+    "loading": "පූරණය වෙමින්...",
+    "save": "සුරකින්න",
+    "cancel": "අවලංගු කරන්න",
+    "delete": "මකන්න",
+    "edit": "සංස්කරණය කරන්න",
+    "add": "එකතු කරන්න",
+    "search": "සොයන්න",
+    "filter": "පෙරහන",
+    "export": "අපනයනය කරන්න",
+    "import": "ආයාත කරන්න",
+    "yes": "ඔව්",
+    "no": "නැත",
+    "confirm": "තහවුරු කරන්න",
+    "close": "වසන්න",
+    "selectRange": "පරාසය තෝරන්න",
+    "male": "පිරිමි",
+    "female": "ගැහැණු"
+  },
+  "settings": {
+    "title": "සැකසුම්",
+    "language": "භාෂාව",
+    "selectLanguage": "භාෂාව තෝරන්න",
+    "english": "English (ඉංග්‍රීසි)",
+    "sinhala": "සිංහල"
+  }
+}

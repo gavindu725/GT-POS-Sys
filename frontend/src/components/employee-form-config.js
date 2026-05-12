@@ -1,0 +1,256 @@
+export const EMPLOYEE_FORM_SECTIONS = {
+  personal: {
+    name: "Personal Information",
+    shortName: "Personal",
+    fields: [
+      {
+        id: "nameWithInitials",
+        label: "Name with Initials",
+        type: "text",
+        required: true,
+        placeholder: "e.g., J.D. Smith",
+      },
+      { id: "fullName", label: "Full Name", type: "text", required: true },
+      { id: "nic", label: "NIC", type: "text", required: true },
+      { id: "dob", label: "Date of Birth", type: "date", required: true },
+      {
+        id: "gender",
+        label: "Gender",
+        type: "select",
+        required: true,
+        options: [
+          { value: "Male", label: "Male" },
+          { value: "Female", label: "Female" },
+        ],
+      },
+      {
+        id: "mstatus",
+        label: "Marital Status",
+        type: "select",
+        required: true,
+        options: [
+          { value: "Single", label: "Single" },
+          { value: "Married", label: "Married" },
+        ],
+      },
+    ],
+  },
+  contact: {
+    name: "Contact Information",
+    shortName: "Contact",
+    fields: [
+      { id: "email", label: "Email", type: "email", required: true },
+      { id: "phone1", label: "Phone 1", type: "text", required: true },
+      { id: "phone2", label: "Phone 2", type: "text", required: false },
+      {
+        id: "address",
+        label: "Address",
+        type: "text",
+        required: true,
+        fullWidth: true,
+      },
+    ],
+  },
+  employment: {
+    name: "Employment Information",
+    shortName: "Employment",
+    fields: [
+      {
+        id: "jobRole",
+        label: "Job Role",
+        type: "select",
+        required: true,
+        dataSource: "jobRoles",
+      },
+      {
+        id: "jobClass",
+        label: "Job Class",
+        type: "select",
+        required: true,
+        dataSource: "jobClasses",
+      },
+      {
+        id: "permanentStatus",
+        label: "Permanent Status",
+        type: "select",
+        required: false,
+        options: [
+          { value: "P", label: "Permanent" },
+          { value: "T", label: "Training" },
+        ],
+      },
+      {
+        id: "careerStartDate",
+        label: "Career Start Date",
+        type: "date",
+        required: false,
+      },
+      { id: "joinedDate", label: "Joined Date", type: "date", required: false },
+      {
+        id: "appointmentType",
+        label: "Appointment Type",
+        type: "select",
+        required: true,
+        options: [
+          { value: "Recruitment", label: "Recruitment" },
+          { value: "Promotion", label: "Promotion" },
+          { value: "Transfer", label: "Transfer" },
+          { value: "Re-designation", label: "Re-designation" },
+        ],
+      },
+      {
+        id: "retirementDate",
+        label: "Retirement Date",
+        type: "date",
+        required: false,
+        disabled: true,
+      },
+    ],
+  },
+  promotionDates: {
+    name: "Current Position Details",
+    shortName: "Position",
+    fields: [
+      {
+        id: "currentClassPromotionDate",
+        label: "Current Class Promotion Date",
+        type: "date",
+        required: true,
+        description: "Date when promoted to current class",
+      },
+      {
+        id: "yearsInCurrentClass",
+        label: "Years in Current Class",
+        type: "yearsInClassInput",
+        required: true,
+        description: "Total years completed in current class (e.g., 5)",
+        dependsOn: "jobRoleClass",
+        placeholder: "e.g., 5",
+      },
+      {
+        id: "ebExamStatus",
+        label: "Efficiency Bar Exam Status",
+        type: "select",
+        required: true,
+        options: [
+          { value: "Not Done", label: "Not Done" },
+          { value: "EB I", label: "EB I Cleared" },
+          { value: "EB II", label: "EB II Cleared" },
+          { value: "EB III", label: "EB III Cleared" },
+        ],
+        description: "Highest EB exam cleared",
+      },
+      {
+        id: "ebExamDate",
+        label: "EB Exam Date",
+        type: "date",
+        required: false,
+        conditional: true,
+        description: "Date when EB exam was cleared (if applicable)",
+      },
+      {
+        id: "hasActiveInquiry",
+        label: "Active Inquiry",
+        type: "switch",
+        required: false,
+        description: "Enable if employee has an active inquiry",
+      },
+      {
+        id: "inquiryReason",
+        label: "Inquiry Reason/Details",
+        type: "textarea",
+        required: false,
+        description: "Provide details about the active inquiry",
+        dependsOn: "hasActiveInquiry",
+        placeholder:
+          "Enter the reason for the inquiry, case number, and any relevant details...",
+        rows: 3,
+      },
+      {
+        id: "holdIncrement",
+        label: "Hold Increment",
+        type: "switch",
+        required: false,
+        description: "Prevent employee from receiving salary increments",
+        dependsOn: "hasActiveInquiry",
+      },
+      {
+        id: "holdSalary",
+        label: "Hold Salary",
+        type: "switch",
+        required: false,
+        description: "Suspend salary payments temporarily",
+        dependsOn: "hasActiveInquiry",
+      },
+      {
+        id: "disableEmployment",
+        label: "Disable Employment",
+        type: "switch",
+        required: false,
+        description: "Suspend employee from duty (serious cases)",
+        dependsOn: "hasActiveInquiry",
+      },
+    ],
+  },
+  previous: {
+    name: "Previous Employment",
+    shortName: "Previous",
+    fields: [
+      { id: "prevRole", label: "Previous Role", type: "text", required: false },
+      {
+        id: "prevWorkplace",
+        label: "Previous Workplace",
+        type: "text",
+        required: false,
+      },
+    ],
+  },
+  // career: {
+  //   name: "Career History",
+  //   shortName: "Career",
+  //   fields: [
+  //     {
+  //       id: "careerHistory",
+  //       label: "Career Progression",
+  //       type: "careerHistory",
+  //       description: "Track promotions, transfers, and role changes",
+  //     },
+  //   ],
+  // },
+  // efficiency: {
+  //   name: "Efficiency Bar",
+  //   shortName: "Efficiency",
+  //   fields: [
+  //     {
+  //       id: "efficiencyBars",
+  //       label: "Efficiency Bar Exams",
+  //       type: "efficiencyHistory",
+  //       description: "Track EB I, II, III clearances and dates",
+  //     },
+  //   ],
+  // },
+  // increment: {
+  //   name: "Salary Increments",
+  //   shortName: "Increments",
+  //   fields: [
+  //     {
+  //       id: "salaryIncrements",
+  //       label: "Increment History",
+  //       type: "incrementHistory",
+  //       description: "Track annual salary increment dates and amounts",
+  //     },
+  //   ],
+  // },
+  // salary: {
+  //   name: "Salary Information",
+  //   shortName: "Salary",
+  //   fields: [
+  //     {
+  //       id: "salary",
+  //       label: "Salary",
+  //       type: "dynamic",
+  //       levels: ["I", "II", "III"],
+  //     },
+  //   ],
+  // },
+};
