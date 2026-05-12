@@ -51,6 +51,8 @@ import {
   PackageX,
   AlertTriangle,
   Settings2,
+  LayoutGrid,
+  LayoutList,
 } from "lucide-react";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -99,6 +101,9 @@ export default function Products() {
 
   // delete dialog
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  // view mode
+  const [viewMode, setViewMode] = useState("table");
 
   // ── data fetching ────────────────────────────────────────────────────────
 
@@ -364,20 +369,88 @@ export default function Products() {
         </div>
       </div>
 
-      {/* Search */}
-      <div className="relative mb-4 max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search name, SKU, category, brand…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-9"
-        />
+      {/* Search + View Toggle */}
+      <div className="flex items-center gap-2 mb-4">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search name, SKU, category, brand…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+        <div className="flex border rounded-md overflow-hidden">
+          <Button
+            variant={viewMode === "table" ? "secondary" : "ghost"}
+            size="icon"
+            className="rounded-none h-9 w-9"
+            onClick={() => setViewMode("table")}
+            title="Table view"
+          >
+            <LayoutList className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === "card" ? "secondary" : "ghost"}
+            size="icon"
+            className="rounded-none h-9 w-9"
+            onClick={() => setViewMode("card")}
+            title="Card view"
+          >
+            <LayoutGrid className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
-      {/* Table */}
+      {/* Table / Card */}
       {loading ? (
         <p className="text-muted-foreground text-center py-16">Loading…</p>
+      ) : viewMode === "card" ? (
+        filtered.length === 0 ? (
+          <div className="text-center text-muted-foreground py-16">
+            <PackageX className="h-8 w-8 mx-auto mb-2 opacity-30" />
+            No products found
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {filtered.map((p) => {
+              const lowStock = p.reorder_level > 0 && p.stock_quantity <= p.reorder_level;
+              return (
+                <div key={p.id} className="border rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                  <div className="bg-muted h-36 flex items-center justify-center overflow-hidden">
+                    {p.image_url ? (
+                      <img src={p.image_url} alt={p.name} className="h-full w-full object-cover" />
+                    ) : (
+                      <PackageX className="h-10 w-10 opacity-20" />
+                    )}
+                  </div>
+                  <div className="p-3 flex flex-col gap-1 flex-1">
+                    <p className="font-medium text-sm leading-tight line-clamp-2">{p.name}</p>
+                    <p className="text-xs font-mono text-muted-foreground">{p.sku}</p>
+                    <p className="text-xs text-muted-foreground">{p.category_name}{p.brand_name ? ` · ${p.brand_name}` : ""}</p>
+                    <p className="text-sm font-semibold mt-auto">Rs. {Number(p.selling_price).toLocaleString()}</p>
+                    <div className="flex items-center justify-between">
+                      <span className={`text-xs ${lowStock ? "text-destructive font-semibold" : "text-muted-foreground"}`}>
+                        Stock: {p.stock_quantity}{lowStock && <AlertTriangle className="inline h-3 w-3 ml-0.5" />}
+                      </span>
+                      <Badge variant={p.status === "active" ? "default" : "secondary"} className="text-xs px-1.5 py-0">
+                        {p.status}
+                      </Badge>
+                    </div>
+                    <div className="flex gap-1 mt-1">
+                      <Button variant="outline" size="sm" className="flex-1 h-7 text-xs" onClick={() => openEdit(p)}>
+                        <Pencil className="h-3 w-3 mr-1" /> Edit
+                      </Button>
+                      <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => setDeleteTarget(p)} disabled={p.status === "inactive"}>
+                        <Trash2 className="h-3 w-3 text-destructive" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )
       ) : (
         <div className="rounded-md border">
           <Table>

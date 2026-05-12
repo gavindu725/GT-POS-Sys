@@ -184,6 +184,30 @@
   box-shadow: 0 0 0 6px oklch(0.7 0.2 250 / 0.3) !important;
 }
 
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 4mm;
+  }
+
+  #root {
+    display: none !important;
+  }
+
+  #invoice-print-root {
+    display: block !important;
+    width: 72mm;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    color: #000;
+    background: #fff;
+  }
+}
+
+#invoice-print-root {
+  display: none;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

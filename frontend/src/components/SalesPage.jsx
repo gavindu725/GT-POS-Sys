@@ -50,7 +50,9 @@ import {
   ScanSearch,
   Pencil,
   Ban,
+  Printer,
 } from "lucide-react";
+import SalesInvoice from "@/components/SalesInvoice";
 
 const formatToday = () => new Date().toISOString().slice(0, 10);
 
@@ -93,6 +95,16 @@ export default function SalesPage() {
   const [lookupQuery, setLookupQuery] = useState("");
   const [cancelTarget, setCancelTarget] = useState(null);
   const [editId, setEditId] = useState(null);
+  const [invoiceSale, setInvoiceSale] = useState(null);
+
+  const openInvoice = async (saleId) => {
+    try {
+      const res = await axios.get(`${API_URL}/sales/${saleId}`);
+      setInvoiceSale(res.data.data);
+    } catch {
+      toast.error("Failed to load invoice");
+    }
+  };
 
   const fetchData = useCallback(() => {
     setLoading(true);
@@ -570,6 +582,14 @@ export default function SalesPage() {
                       <Button
                         variant="ghost"
                         size="icon"
+                        onClick={() => void openInvoice(sale.id)}
+                        title="Print invoice"
+                      >
+                        <Printer className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         onClick={() => void openEdit(sale.id)}
                         disabled={sale.status === "canceled" || hydrating}
                       >
@@ -1022,6 +1042,12 @@ export default function SalesPage() {
           </form>
         </SheetContent>
       </Sheet>
+
+      <SalesInvoice
+        sale={invoiceSale}
+        open={!!invoiceSale}
+        onClose={() => setInvoiceSale(null)}
+      />
 
       <AlertDialog
         open={!!cancelTarget}
