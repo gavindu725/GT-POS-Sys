@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard";
 import Products from "./components/Products";
 import SupplierSettings from "./components/settings/SupplierSettings";
 import PurchasesPage from "./components/PurchasesPage";
+import SalesPage from "./components/SalesPage";
 import SettingsRouter from "./components/settings/SettingsRouter";
 import { AccessibilityWidget } from "./components/AccessibilityWidget";
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<Products />} />
           <Route path="purchases" element={<PurchasesPage />} />
+          <Route path="sales" element={<SalesPage />} />
           <Route path="suppliers" element={<SupplierSettings />} />
           <Route path="settings/*" element={<SettingsRouter />} />
         </Route>

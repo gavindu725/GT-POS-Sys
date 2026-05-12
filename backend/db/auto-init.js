@@ -130,6 +130,18 @@ async function ensureAdminTable(connection) {
     );
     console.log("✓ Products serialized column added\n");
   }
+
+  const [salesStatusColumn] = await connection.query(
+    "SELECT COUNT(*) as count FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'sales' AND COLUMN_NAME = 'status'",
+    [DB_CONFIG.database],
+  );
+
+  if (salesStatusColumn[0].count === 0) {
+    await connection.query(
+      "ALTER TABLE sales ADD COLUMN status enum('active','canceled') NOT NULL DEFAULT 'active' AFTER sale_date",
+    );
+    console.log("✓ Sales status column added\n");
+  }
 }
 
 /**

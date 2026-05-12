@@ -4,6 +4,7 @@ import {
   Package,
   Settings,
   ShoppingCart,
+  ReceiptText,
   Truck,
   Zap,
 } from "lucide-react";
@@ -26,6 +27,7 @@ import { API_URL } from "@/lib/api";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Package, label: "Products", href: "/products" },
+  { icon: ReceiptText, label: "Sales", href: "/sales" },
   { icon: ShoppingCart, label: "Purchases", href: "/purchases" },
   { icon: Truck, label: "Suppliers", href: "/suppliers" },
 ];

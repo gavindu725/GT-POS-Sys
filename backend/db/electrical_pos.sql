@@ -351,6 +351,7 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `payment_method` enum('cash','card','bank_transfer') DEFAULT 'cash',
   `sold_by` int DEFAULT NULL,
   `sale_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('active','canceled') DEFAULT 'active',
   PRIMARY KEY (`id`),
   UNIQUE KEY `invoice_no` (`invoice_no`),
   KEY `fk_sale_customer` (`customer_id`),
