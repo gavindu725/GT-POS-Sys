@@ -52,7 +52,12 @@ const adminLogin = async (req, res) => {
         JWT_SECRET,
         { expiresIn: JWT_EXPIRES_IN },
       );
-      res.cookie("token", token);
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 3600000,
+      });
       return res.json({ loginStatus: true });
     } else {
       return res.json({
@@ -170,7 +175,11 @@ const updatePassword = async (req, res) => {
 };
 
 const adminLogout = (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   return res.json({ Status: "Success", message: "Logged out successfully" });
 };
 

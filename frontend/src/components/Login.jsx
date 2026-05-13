@@ -46,9 +46,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center before:content-[''] before:fixed before:inset-0 before:bg-[url('https://res.cloudinary.com/dyfzbwhcr/image/upload/v1768939301/office2_ewuajf.jpg')] before:bg-cover before:bg-center before:bg-no-repeat before:-z-10">
+    <div className="flex min-h-svh flex-col items-center justify-center before:content-[''] before:fixed before:inset-0 before:bg-[url('')] before:bg-cover before:bg-center before:bg-no-repeat before:-z-10">
       <div className="flex flex-col md:flex-row w-full max-w-sm md:max-w-4xl px-4">
-        <Card className="flex-1 flex items-center justify-center rounded-t-xl rounded-b-none md:rounded-l-xl md:rounded-r-none bg-[url('https://res.cloudinary.com/dyfzbwhcr/image/upload/v1768939307/Gemini_Generated_Image_37lizm37lizm37li_r6zaqi.png')] bg-cover bg-center bg-no-repeat">
+        <Card className="flex-1 flex items-center justify-center rounded-t-xl rounded-b-none md:rounded-l-xl md:rounded-r-none bg-[url('')] bg-cover bg-center bg-no-repeat">
           <CardContent className="text-center py-8">
             <div className="backdrop-blur-xl border text-white rounded-xl p-5">
               <h2 className="text-2xl font-bold mb-2">
