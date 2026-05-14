@@ -18,7 +18,7 @@ const corsOrigins = process.env.CORS_ORIGINS
       "http://localhost:5173",
       "http://localhost:5174",
       "http://localhost:5175",
-      "https://posgteclectricals.vercel.app",
+      "https://pos-gtelectricals.vercel.app",
     ];
 
 app.use(
