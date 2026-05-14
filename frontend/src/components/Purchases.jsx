@@ -54,11 +54,13 @@ const createItem = () => ({
   variants: [],
 });
 
-const EMPTY_FORM = {
+const createEmptyForm = () => ({
   supplier_id: "",
   purchase_date: formatToday(),
   items: [createItem()],
-};
+});
+
+const EMPTY_FORM = createEmptyForm();
 
 export default function Purchases() {
   const navigate = useNavigate();
@@ -72,6 +74,7 @@ export default function Purchases() {
   const [form, setForm] = useState(createEmptyForm());
   const [itemLoadingId, setItemLoadingId] = useState(null);
   const [cancelTarget, setCancelTarget] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const fetchData = useCallback(() => {
     setLoading(true);
@@ -217,39 +220,22 @@ export default function Purchases() {
 
   return (
     <main className="overflow-y-auto p-5">
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <div>
-          <h3 className="text-2xl font-bold">Purchases</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Create stock purchase entries and assign them to suppliers.
-          </p>
+      <div className="mb-4 flex flex-wrap items-center gap-2 justify-between">
+        <div className="flex flex-1 items-center gap-2 min-w-0">
+          <div className="relative max-w-sm flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search invoice, supplier, date..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9"
+            />
+          </div>
         </div>
         <Button onClick={openAdd} className="gap-2">
           <Plus className="h-4 w-4" /> New Purchase
         </Button>
       </div>
-
-      <Card className="mb-4">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between gap-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              <ShoppingCart className="h-4 w-4" /> Purchase Register
-            </CardTitle>
-            <Badge variant="secondary">{purchases.length} total</Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="relative max-w-sm">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search invoice, supplier, date..."
-              className="pl-9"
-            />
-          </div>
-        </CardContent>
-      </Card>
 
       {loading ? (
         <p className="py-16 text-center text-muted-foreground">Loading…</p>

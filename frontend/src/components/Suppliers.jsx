@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "@/utils/axios";
 import { toast } from "sonner";
 import { API_URL } from "@/lib/api";
@@ -35,7 +34,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Plus, Pencil, Trash2, Search, Truck } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Truck } from "lucide-react";
 
 const EMPTY_FORM = {
   name: "",
@@ -44,8 +43,7 @@ const EMPTY_FORM = {
   address: "",
 };
 
-export default function SupplierSettings() {
-  const navigate = useNavigate();
+export default function Suppliers() {
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -153,50 +151,23 @@ export default function SupplierSettings() {
 
   return (
     <main className="overflow-y-auto p-5">
-      <div className="mb-6 flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate("/settings")}
-          className="gap-2"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back
-        </Button>
-      </div>
-
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <div>
-          <h3 className="text-2xl font-bold">Suppliers</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Add and manage supplier records for purchasing workflows.
-          </p>
-        </div>
-        <Button onClick={openAdd} className="gap-2">
-          <Plus className="h-4 w-4" /> Add Supplier
-        </Button>
-      </div>
-
-      <Card className="mb-4">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between gap-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Truck className="h-4 w-4" /> Supplier Directory
-            </CardTitle>
-            <Badge variant="secondary">{suppliers.length} total</Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="relative max-w-sm">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <div className="mb-4 flex flex-wrap items-center gap-2 justify-between">
+        <div className="flex flex-1 items-center gap-2 min-w-0">
+          <div className="relative max-w-sm flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
               placeholder="Search suppliers..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="pl-9"
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+        <Button onClick={openAdd} className="gap-2">
+          <Plus className="h-4 w-4" /> New Supplier
+        </Button>
+      </div>
+
 
       {loading ? (
         <p className="py-16 text-center text-muted-foreground">Loading…</p>

@@ -5,8 +5,8 @@ import PageLayout from "./pages/DashboardLayout";
 import { Toaster } from "sonner";
 import Dashboard from "./components/Dashboard";
 import Products from "./components/Products";
-import SupplierSettings from "./components/settings/SupplierSettings";
-import PurchasesPage from "./components/PurchasesPage";
+import Suppliers from "./components/Suppliers";
+import Purchases from "./components/Purchases";
 import SalesPage from "./components/SalesPage";
 import SettingsRouter from "./components/settings/SettingsRouter";
 import { AccessibilityWidget } from "./components/AccessibilityWidget";
@@ -22,9 +22,9 @@ function App() {
           <Route index element={<Navigate to="auth/adminlogin" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<Products />} />
-          <Route path="purchases" element={<PurchasesPage />} />
+          <Route path="purchases" element={<Purchases />} />
           <Route path="sales" element={<SalesPage />} />
-          <Route path="suppliers" element={<SupplierSettings />} />
+          <Route path="suppliers" element={<Suppliers />} />
           <Route path="settings/*" element={<SettingsRouter />} />
         </Route>
       </Routes>

@@ -43,7 +43,6 @@ export default function SettingsHub() {
   return (
     <main className="overflow-y-auto p-5">
       <div className="mb-6">
-        <h3 className="text-2xl font-bold">Settings</h3>
         <p className="text-sm text-muted-foreground mt-1">
           Manage your account and preferences
         </p>

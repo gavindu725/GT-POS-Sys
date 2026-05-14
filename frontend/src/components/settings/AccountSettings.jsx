@@ -289,7 +289,6 @@ export default function AccountSettings() {
       </div>
 
       <div className="mb-6">
-        <h3 className="text-2xl font-bold">Account Settings</h3>
         <p className="text-sm text-muted-foreground mt-1">
           Manage your admin account email and password
         </p>

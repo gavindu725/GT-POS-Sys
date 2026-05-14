@@ -356,10 +356,40 @@ export default function Products() {
 
   return (
     <main className="overflow-y-auto p-5">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-2xl font-bold">Products</h3>
-        <div className="flex items-center gap-2">
+      {/* Search + View Toggle */}
+      <div className="mb-4 flex flex-wrap items-center gap-2 justify-between">
+        <div className="flex flex-1 items-center gap-2 min-w-0">
+          <div className="relative max-w-sm flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search name, SKU, category, brand…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <div className="flex border rounded-md overflow-hidden shrink-0">
+            <Button
+              variant={viewMode === "table" ? "secondary" : "ghost"}
+              size="icon"
+              className="rounded-none h-9 w-9"
+              onClick={() => setViewMode("table")}
+              title="Table view"
+            >
+              <LayoutList className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={viewMode === "card" ? "secondary" : "ghost"}
+              size="icon"
+              className="rounded-none h-9 w-9"
+              onClick={() => setViewMode("card")}
+              title="Card view"
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -369,39 +399,6 @@ export default function Products() {
           </Button>
           <Button onClick={openAdd}>
             <Plus className="h-4 w-4 mr-2" /> Add Product
-          </Button>
-        </div>
-      </div>
-
-      {/* Search + View Toggle */}
-      <div className="flex items-center gap-2 mb-4">
-        <div className="relative max-w-sm flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search name, SKU, category, brand…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-        <div className="flex border rounded-md overflow-hidden">
-          <Button
-            variant={viewMode === "table" ? "secondary" : "ghost"}
-            size="icon"
-            className="rounded-none h-9 w-9"
-            onClick={() => setViewMode("table")}
-            title="Table view"
-          >
-            <LayoutList className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "card" ? "secondary" : "ghost"}
-            size="icon"
-            className="rounded-none h-9 w-9"
-            onClick={() => setViewMode("card")}
-            title="Card view"
-          >
-            <LayoutGrid className="h-4 w-4" />
           </Button>
         </div>
       </div>

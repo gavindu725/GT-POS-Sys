@@ -8,6 +8,7 @@ import supplierRouter from "./routers/supplier.Route.js";
 import purchaseRouter from "./routers/purchase.Route.js";
 import saleRouter from "./routers/sale.Route.js";
 import settingsRouter from "./routers/settings.Route.js";
+import uploadRouter from "./routers/upload.Route.js";
 import autoInitialize from "./db/auto-init.js";
 
 const app = express();
@@ -46,6 +47,7 @@ app.use("/suppliers", supplierRouter);
 app.use("/purchases", purchaseRouter);
 app.use("/sales", saleRouter);
 app.use("/settings", settingsRouter);
+app.use("/upload", uploadRouter);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });

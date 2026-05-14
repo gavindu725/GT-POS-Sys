@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Save, Package, Tag, Zap, Ruler } from "lucide-react";
 import {
-  Card, CardContent, CardHeader, CardTitle, CardDescription,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,20 +46,24 @@ export default function Settings() {
   return (
     <main className="overflow-y-auto p-5">
       <div className="mb-6 flex items-center gap-4">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/settings")} className="gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate("/settings")}
+          className="gap-2"
+        >
           <ArrowLeft className="h-4 w-4" /> Back
         </Button>
       </div>
 
-      <h3 className="text-2xl font-bold mb-6">System Configuration</h3>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
-
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start mt-6">
         {/* General Settings */}
         <Card>
           <CardHeader>
             <CardTitle>General Settings</CardTitle>
-            <CardDescription>Configure system name and branding</CardDescription>
+            <CardDescription>
+              Configure system name and branding
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSave} className="space-y-4">
@@ -63,7 +71,9 @@ export default function Settings() {
                 <Label>System Name</Label>
                 <Input
                   value={form.system_name}
-                  onChange={(e) => setForm({ ...form, system_name: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, system_name: e.target.value })
+                  }
                   placeholder="GT Electricals"
                 />
               </div>
@@ -71,7 +81,9 @@ export default function Settings() {
                 <Label>Logo URL</Label>
                 <Input
                   value={form.system_logo_url}
-                  onChange={(e) => setForm({ ...form, system_logo_url: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, system_logo_url: e.target.value })
+                  }
                   placeholder="https://..."
                 />
               </div>
@@ -104,11 +116,26 @@ export default function Settings() {
           <CardContent>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { icon: Tag, label: "Categories", color: "text-blue-600 bg-blue-50" },
-                { icon: Zap, label: "Brands", color: "text-orange-600 bg-orange-50" },
-                { icon: Ruler, label: "Attributes", color: "text-green-600 bg-green-50" },
+                {
+                  icon: Tag,
+                  label: "Categories",
+                  color: "text-blue-600 bg-blue-50",
+                },
+                {
+                  icon: Zap,
+                  label: "Brands",
+                  color: "text-orange-600 bg-orange-50",
+                },
+                {
+                  icon: Ruler,
+                  label: "Attributes",
+                  color: "text-green-600 bg-green-50",
+                },
               ].map(({ icon: Icon, label, color }) => (
-                <div key={label} className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-muted/50">
+                <div
+                  key={label}
+                  className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-muted/50"
+                >
                   <div className={`p-1.5 rounded-md ${color}`}>
                     <Icon className="h-4 w-4" />
                   </div>
@@ -121,7 +148,6 @@ export default function Settings() {
             </p>
           </CardContent>
         </Card>
-
       </div>
     </main>
   );

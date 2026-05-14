@@ -217,7 +217,6 @@ export default function PreferencesSettings() {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex-1">
-          <h3 className="text-2xl font-bold">Preferences</h3>
           <p className="text-sm text-muted-foreground mt-1">
             Customize appearance, fonts, and accessibility options
           </p>

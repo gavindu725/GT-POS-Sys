@@ -7,7 +7,7 @@ export const uploadImage = async (req, res) => {
     // Determine folder path based on upload type
     let folderPath;
     if (uploadType === "system_logo") {
-      folderPath = "system";
+      folderPath = "system/logo";
     } else if (employeeNic) {
       // Profile photos: employees/{NIC}/
       // Documents: employees/{NIC}/documents/
