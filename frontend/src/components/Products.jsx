@@ -326,11 +326,15 @@ export default function Products() {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`${API_URL}/products/${deleteTarget.id}`);
-      toast.success("Product deactivated");
+      const response = await axios.delete(
+        `${API_URL}/products/${deleteTarget.id}`,
+      );
+      toast.success(
+        response.data?.deleted ? "Product deleted" : "Product deactivated",
+      );
       fetchProducts();
-    } catch {
-      toast.error("Failed to deactivate product");
+    } catch (err) {
+      toast.error(err.response?.data?.error || "Failed to delete product");
     } finally {
       setDeleteTarget(null);
     }
@@ -414,34 +418,71 @@ export default function Products() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {filtered.map((p) => {
-              const lowStock = p.reorder_level > 0 && p.stock_quantity <= p.reorder_level;
+              const lowStock =
+                p.reorder_level > 0 && p.stock_quantity <= p.reorder_level;
               return (
-                <div key={p.id} className="border rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                <div
+                  key={p.id}
+                  className="border rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow"
+                >
                   <div className="bg-muted h-36 flex items-center justify-center overflow-hidden">
                     {p.image_url ? (
-                      <img src={p.image_url} alt={p.name} className="h-full w-full object-cover" />
+                      <img
+                        src={p.image_url}
+                        alt={p.name}
+                        className="h-full w-full object-cover"
+                      />
                     ) : (
                       <PackageX className="h-10 w-10 opacity-20" />
                     )}
                   </div>
                   <div className="p-3 flex flex-col gap-1 flex-1">
-                    <p className="font-medium text-sm leading-tight line-clamp-2">{p.name}</p>
-                    <p className="text-xs font-mono text-muted-foreground">{p.sku}</p>
-                    <p className="text-xs text-muted-foreground">{p.category_name}{p.brand_name ? ` · ${p.brand_name}` : ""}</p>
-                    <p className="text-sm font-semibold mt-auto">Rs. {Number(p.selling_price).toLocaleString()}</p>
+                    <p className="font-medium text-sm leading-tight line-clamp-2">
+                      {p.name}
+                    </p>
+                    <p className="text-xs font-mono text-muted-foreground">
+                      {p.sku}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {p.category_name}
+                      {p.brand_name ? ` · ${p.brand_name}` : ""}
+                    </p>
+                    <p className="text-sm font-semibold mt-auto">
+                      Rs. {Number(p.selling_price).toLocaleString()}
+                    </p>
                     <div className="flex items-center justify-between">
-                      <span className={`text-xs ${lowStock ? "text-destructive font-semibold" : "text-muted-foreground"}`}>
-                        Stock: {p.stock_quantity}{lowStock && <AlertTriangle className="inline h-3 w-3 ml-0.5" />}
+                      <span
+                        className={`text-xs ${lowStock ? "text-destructive font-semibold" : "text-muted-foreground"}`}
+                      >
+                        Stock: {p.stock_quantity}
+                        {lowStock && (
+                          <AlertTriangle className="inline h-3 w-3 ml-0.5" />
+                        )}
                       </span>
-                      <Badge variant={p.status === "active" ? "default" : "secondary"} className="text-xs px-1.5 py-0">
+                      <Badge
+                        variant={
+                          p.status === "active" ? "default" : "secondary"
+                        }
+                        className="text-xs px-1.5 py-0"
+                      >
                         {p.status}
                       </Badge>
                     </div>
                     <div className="flex gap-1 mt-1">
-                      <Button variant="outline" size="sm" className="flex-1 h-7 text-xs" onClick={() => openEdit(p)}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 h-7 text-xs"
+                        onClick={() => openEdit(p)}
+                      >
                         <Pencil className="h-3 w-3 mr-1" /> Edit
                       </Button>
-                      <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => setDeleteTarget(p)} disabled={p.status === "inactive"}>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={() => setDeleteTarget(p)}
+                      >
                         <Trash2 className="h-3 w-3 text-destructive" />
                       </Button>
                     </div>
@@ -529,7 +570,6 @@ export default function Products() {
                           variant="ghost"
                           size="icon"
                           onClick={() => setDeleteTarget(p)}
-                          disabled={p.status === "inactive"}
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
@@ -998,10 +1038,24 @@ export default function Products() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Deactivate Product?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {deleteTarget?.status === "inactive"
+                ? "Delete Product?"
+                : "Deactivate Product?"}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              <strong>{deleteTarget?.name}</strong> will be marked inactive and
-              hidden from sales. Stock movements and history are preserved.
+              {deleteTarget?.status === "inactive" ? (
+                <>
+                  <strong>{deleteTarget?.name}</strong> is already inactive and
+                  will be permanently removed if you continue.
+                </>
+              ) : (
+                <>
+                  <strong>{deleteTarget?.name}</strong> will be marked inactive
+                  and hidden from sales. Stock movements and history are
+                  preserved.
+                </>
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -1010,7 +1064,7 @@ export default function Products() {
               onClick={confirmDelete}
               className="bg-destructive hover:bg-destructive/90"
             >
-              Deactivate
+              {deleteTarget?.status === "inactive" ? "Delete" : "Deactivate"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

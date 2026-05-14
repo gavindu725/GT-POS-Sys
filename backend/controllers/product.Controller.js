@@ -299,11 +299,36 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   try {
+    const [rows] = await con.query("SELECT status FROM products WHERE id = ?", [
+      req.params.id,
+    ]);
+
+    if (!rows.length) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Product not found" });
+    }
+
+    if (rows[0].status === "inactive") {
+      await con.query("DELETE FROM products WHERE id = ?", [req.params.id]);
+      return res.json({ success: true, deleted: true });
+    }
+
     await con.query("UPDATE products SET status = 'inactive' WHERE id = ?", [
       req.params.id,
     ]);
-    res.json({ success: true });
+    res.json({ success: true, deleted: false });
   } catch (err) {
+    if (
+      err.code === "ER_ROW_IS_REFERENCED_2" ||
+      err.code === "ER_ROW_IS_REFERENCED"
+    ) {
+      return res.status(400).json({
+        success: false,
+        error:
+          "This product is still referenced by stock or transaction records and cannot be deleted.",
+      });
+    }
     res.status(500).json({ success: false, error: err.message });
   }
 };
