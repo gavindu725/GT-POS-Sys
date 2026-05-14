@@ -6,7 +6,6 @@ import { ThemeProvider } from "./components/theme-provider";
 import { PreferencesProvider } from "./contexts/PreferencesContext";
 import "./utils/axios";
 import "./index.css";
-import "./i18n/i18n"; // Initialize i18n
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,5 +17,5 @@ root.render(
         </BrowserRouter>
       </ThemeProvider>
     </PreferencesProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

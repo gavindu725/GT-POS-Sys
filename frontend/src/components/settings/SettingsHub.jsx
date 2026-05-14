@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import {
   Card,
   CardDescription,
@@ -10,13 +9,12 @@ import { Settings as SettingsIcon, UserCog, Palette } from "lucide-react";
 
 export default function SettingsHub() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const settingsCategories = [
     {
       id: "account",
-      title: t("settings.hub.account.title"),
-      description: t("settings.hub.account.description"),
+      title: "Account Settings",
+      description: "Manage account and admin users",
       icon: UserCog,
       color: "text-blue-600",
       bgColor: "bg-blue-50",
@@ -24,8 +22,8 @@ export default function SettingsHub() {
     },
     {
       id: "preferences",
-      title: t("settings.hub.preferences.title"),
-      description: t("settings.hub.preferences.description"),
+      title: "Preferences",
+      description: "Customize your experience",
       icon: Palette,
       color: "text-green-600",
       bgColor: "bg-green-50",
@@ -33,8 +31,8 @@ export default function SettingsHub() {
     },
     {
       id: "system",
-      title: t("settings.hub.system.title"),
-      description: t("settings.hub.system.description"),
+      title: "System Configuration",
+      description: "System settings and configuration",
       icon: SettingsIcon,
       color: "text-purple-600",
       bgColor: "bg-purple-50",
@@ -45,9 +43,9 @@ export default function SettingsHub() {
   return (
     <main className="overflow-y-auto p-5">
       <div className="mb-6">
-        <h3 className="text-2xl font-bold">{t("settings.hub.title")}</h3>
+        <h3 className="text-2xl font-bold">Settings</h3>
         <p className="text-sm text-muted-foreground mt-1">
-          {t("settings.hub.description")}
+          Manage your account and preferences
         </p>
       </div>
 
@@ -83,7 +81,7 @@ export default function SettingsHub() {
                       </div>
                       {category.disabled && (
                         <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0">
-                          {t("settings.hub.soon")}
+                          Coming Soon
                         </span>
                       )}
                     </div>

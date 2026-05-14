@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { API_URL } from "@/lib/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeToggle } from "./theme-toggle";
-import LanguageSwitcher from "./LanguageSwitcher";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,10 +20,9 @@ import { Input } from "@/components/ui/input";
 
 function Header() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [userProfile, setUserProfile] = useState({
     email: "Loading...",
-    role: t("header.administrator"),
+    role: "Administrator",
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -140,7 +137,7 @@ function Header() {
             <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground animate-spin" />
           )}
           <Input
-            placeholder={t("header.searchPlaceholder")}
+            placeholder="Search..."
             className="pl-10 pr-10"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -203,7 +200,6 @@ function Header() {
       </div>
 
       <div className="flex items-center gap-3 ml-4">
-        <LanguageSwitcher />
         <ThemeToggle />
 
         <DropdownMenu>
@@ -241,11 +237,11 @@ function Header() {
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => navigate("/settings/account")}>
                 <User className="mr-2 h-4 w-4" />
-                <span>{t("header.accountSettings")}</span>
+                <span>Account Settings</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/settings")}>
                 <Settings className="mr-2 h-4 w-4" />
-                <span>{t("header.systemSettings")}</span>
+                <span>System Settings</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
@@ -256,7 +252,7 @@ function Header() {
               className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              <span>{t("header.logout")}</span>
+              <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

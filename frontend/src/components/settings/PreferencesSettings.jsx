@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
-import i18n from "@/i18n/i18n";
 import {
   Card,
   CardContent,
@@ -37,7 +35,6 @@ import {
   Check,
   Upload,
   X,
-  Languages,
   Building2,
   Loader2,
 } from "lucide-react";
@@ -50,11 +47,9 @@ import {
   fontWeights,
   fontSizeRange,
 } from "@/contexts/PreferencesContext";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function PreferencesSettings() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { preferences, updatePreference, resetPreferences } = usePreferences();
   const [systemName, setSystemName] = useState("");
   const [systemLogoUrl, setSystemLogoUrl] = useState("");
@@ -422,22 +417,6 @@ export default function PreferencesSettings() {
           </CardContent>
         </Card>
 
-        {/* Language Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Languages className="h-5 w-5" />
-              Language
-            </CardTitle>
-            <CardDescription>
-              Choose your preferred language for the application
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <LanguageSwitcher />
-          </CardContent>
-        </Card>
-
         {/* Typography Settings */}
         <Card>
           <CardHeader>
@@ -452,7 +431,7 @@ export default function PreferencesSettings() {
           <CardContent className="space-y-6">
             {/* Font Family */}
             <div className="space-y-3">
-              <Label>{t("preferences.typography.fontFamily")}</Label>
+              <Label>Font Family</Label>
               <Select
                 value={preferences.fontFamily}
                 onValueChange={(value) => updatePreference("fontFamily", value)}
@@ -461,28 +440,15 @@ export default function PreferencesSettings() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(fontFamilies)
-                    .filter(([key, font]) => {
-                      // Show Sinhala fonts when language is Sinhala, otherwise show all except Sinhala fonts
-                      const isSinhalaFont = [
-                        "notoSansSinhala",
-                        "notoSerifSinhala",
-                        "yaldevi",
-                      ].includes(key);
-                      if (i18n.language === "si") {
-                        return true; // Show all fonts including Sinhala
-                      }
-                      return !isSinhalaFont; // Hide Sinhala fonts for other languages
-                    })
-                    .map(([key, font]) => (
-                      <SelectItem
-                        key={key}
-                        value={key}
-                        style={{ fontFamily: font.value }}
-                      >
-                        {font.name}
-                      </SelectItem>
-                    ))}
+                  {Object.entries(fontFamilies).map(([key, font]) => (
+                    <SelectItem
+                      key={key}
+                      value={key}
+                      style={{ fontFamily: font.value }}
+                    >
+                      {font.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -491,7 +457,7 @@ export default function PreferencesSettings() {
 
             {/* Font Weight */}
             <div className="space-y-3">
-              <Label>{t("preferences.typography.fontWeight")}</Label>
+              <Label>Font Weight</Label>
               <Select
                 value={preferences.fontWeight || "normal"}
                 onValueChange={(value) => updatePreference("fontWeight", value)}
@@ -500,18 +466,10 @@ export default function PreferencesSettings() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="normal">
-                    {t("preferences.typography.fontWeightNormal")}
-                  </SelectItem>
-                  <SelectItem value="medium">
-                    {t("preferences.typography.fontWeightMedium")}
-                  </SelectItem>
-                  <SelectItem value="semibold">
-                    {t("preferences.typography.fontWeightSemibold")}
-                  </SelectItem>
-                  <SelectItem value="bold">
-                    {t("preferences.typography.fontWeightBold")}
-                  </SelectItem>
+                  <SelectItem value="normal">Normal (400)</SelectItem>
+                  <SelectItem value="medium">Medium (500)</SelectItem>
+                  <SelectItem value="semibold">Semi Bold (600)</SelectItem>
+                  <SelectItem value="bold">Bold (700)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -521,7 +479,7 @@ export default function PreferencesSettings() {
             {/* Font Size with Slider */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label>{t("preferences.typography.fontSize")}</Label>
+                <Label>Font Size</Label>
                 <span className="text-sm font-medium bg-muted px-2 py-1 rounded">
                   {preferences.fontSize}%
                 </span>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -24,7 +23,6 @@ import { usePreferences, fontSizeRange } from "@/contexts/PreferencesContext";
 
 export function AccessibilityWidget() {
   const { preferences, updatePreference, resetPreferences } = usePreferences();
-  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   if (!preferences.showAccessibilityWidget) {
@@ -37,7 +35,7 @@ export function AccessibilityWidget() {
   const increaseFontSize = () => {
     const newSize = Math.min(
       currentFontSize + fontSizeRange.step,
-      fontSizeRange.max
+      fontSizeRange.max,
     );
     updatePreference("fontSize", newSize);
   };
@@ -45,7 +43,7 @@ export function AccessibilityWidget() {
   const decreaseFontSize = () => {
     const newSize = Math.max(
       currentFontSize - fontSizeRange.step,
-      fontSizeRange.min
+      fontSizeRange.min,
     );
     updatePreference("fontSize", newSize);
   };
@@ -72,7 +70,7 @@ export function AccessibilityWidget() {
             <div className="flex items-center justify-between">
               <h4 className="font-semibold flex items-center gap-2">
                 <Accessibility className="h-4 w-4" />
-                {t("accessibility.title")}
+                Accessibility
               </h4>
               <Button
                 variant="ghost"
@@ -83,7 +81,7 @@ export function AccessibilityWidget() {
                 }}
               >
                 <RotateCcw className="h-3 w-3 mr-1" />
-                {t("accessibility.reset")}
+                Reset
               </Button>
             </div>
 
@@ -97,7 +95,7 @@ export function AccessibilityWidget() {
                 ) : (
                   <Sun className="h-4 w-4" />
                 )}
-                {t("accessibility.darkMode")}
+                Dark Mode
               </Label>
               <Switch
                 checked={preferences.theme === "dark"}
@@ -111,7 +109,7 @@ export function AccessibilityWidget() {
             <div className="space-y-2">
               <Label className="flex items-center gap-2 text-sm">
                 <Type className="h-4 w-4" />
-                {t("accessibility.textSize")}
+                Text Size
               </Label>
               <div className="flex items-center gap-2">
                 <Button
@@ -153,9 +151,7 @@ export function AccessibilityWidget() {
             {/* Quick Toggles */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <Label className="text-sm">
-                  {t("accessibility.highContrast")}
-                </Label>
+                <Label className="text-sm">High Contrast</Label>
                 <Switch
                   checked={preferences.highContrast}
                   onCheckedChange={(checked) =>
@@ -165,9 +161,7 @@ export function AccessibilityWidget() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label className="text-sm">
-                  {t("accessibility.largeText")}
-                </Label>
+                <Label className="text-sm">Large Text</Label>
                 <Switch
                   checked={preferences.largeText}
                   onCheckedChange={(checked) =>
@@ -177,9 +171,7 @@ export function AccessibilityWidget() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label className="text-sm">
-                  {t("accessibility.reduceMotion")}
-                </Label>
+                <Label className="text-sm">Reduce Motion</Label>
                 <Switch
                   checked={preferences.reduceMotion}
                   onCheckedChange={(checked) =>
@@ -189,9 +181,7 @@ export function AccessibilityWidget() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label className="text-sm">
-                  {t("accessibility.dyslexiaFont")}
-                </Label>
+                <Label className="text-sm">Dyslexia Font</Label>
                 <Switch
                   checked={preferences.dyslexiaFont}
                   onCheckedChange={(checked) =>
@@ -201,7 +191,7 @@ export function AccessibilityWidget() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label className="text-sm">{t("accessibility.boldText")}</Label>
+                <Label className="text-sm">Bold Text</Label>
                 <Switch
                   checked={preferences.fontWeight === "bold"}
                   onCheckedChange={(checked) =>
@@ -211,9 +201,7 @@ export function AccessibilityWidget() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label className="text-sm">
-                  {t("accessibility.focusHighlight")}
-                </Label>
+                <Label className="text-sm">Focus Highlight</Label>
                 <Switch
                   checked={preferences.focusHighlight}
                   onCheckedChange={(checked) =>

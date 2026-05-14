@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { API_URL } from "@/lib/api";
 import {
   Card,
@@ -41,7 +40,6 @@ import {
 
 export default function AccountSettings() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [currentUserEmail, setCurrentUserEmail] = useState("");
   const [currentUserId, setCurrentUserId] = useState(null);
@@ -105,7 +103,7 @@ export default function AccountSettings() {
       setAdmins(response.data.admins || []);
     } catch (error) {
       console.error("Error fetching admins:", error);
-      toast.error(t("settings.account.adminList.errors.fetchFailed"));
+      toast.error("Failed to fetch admin list");
     }
   };
 
@@ -128,7 +126,7 @@ export default function AccountSettings() {
 
       if (actionType === "delete") {
         await axios.delete(`${API_URL}/auth/admins/${selectedAdmin.id}`);
-        toast.success(t("settings.account.adminList.success.deleted"));
+        toast.success("Admin deleted successfully");
       } else {
         const newStatus = actionType === "enable" ? 1 : 0;
         await axios.put(`${API_URL}/auth/admins/${selectedAdmin.id}/status`, {
@@ -136,8 +134,8 @@ export default function AccountSettings() {
         });
         toast.success(
           actionType === "enable"
-            ? t("settings.account.adminList.success.enabled")
-            : t("settings.account.adminList.success.disabled"),
+            ? "Admin enabled successfully"
+            : "Admin disabled successfully",
         );
       }
 
@@ -174,12 +172,12 @@ export default function AccountSettings() {
     e.preventDefault();
 
     if (emailForm.newEmail !== emailForm.confirmEmail) {
-      toast.error(t("settings.account.email.errors.noMatch"));
+      toast.error("Emails do not match");
       return;
     }
 
     if (!emailForm.currentEmail || !emailForm.newEmail) {
-      toast.error(t("settings.account.email.errors.fillFields"));
+      toast.error("Please fill in all fields");
       return;
     }
 
@@ -189,14 +187,11 @@ export default function AccountSettings() {
         currentEmail: emailForm.currentEmail,
         newEmail: emailForm.newEmail,
       });
-      toast.success(t("settings.account.email.success"));
+      toast.success("Email updated successfully");
       setEmailForm({ currentEmail: "", newEmail: "", confirmEmail: "" });
     } catch (error) {
       console.error("Error updating email:", error);
-      toast.error(
-        error.response?.data?.Error ||
-          t("settings.account.email.errors.updateFailed"),
-      );
+      toast.error(error.response?.data?.Error || "Failed to update email");
     } finally {
       setLoading(false);
     }
@@ -206,17 +201,17 @@ export default function AccountSettings() {
     e.preventDefault();
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      toast.error(t("settings.account.password.errors.noMatch"));
+      toast.error("Passwords do not match");
       return;
     }
 
     if (passwordForm.newPassword.length < 6) {
-      toast.error(t("settings.account.password.errors.tooShort"));
+      toast.error("Password must be at least 6 characters");
       return;
     }
 
     if (!passwordForm.currentPassword || !passwordForm.newPassword) {
-      toast.error(t("settings.account.password.errors.fillFields"));
+      toast.error("Please fill in all fields");
       return;
     }
 
@@ -226,7 +221,7 @@ export default function AccountSettings() {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
       });
-      toast.success(t("settings.account.password.success"));
+      toast.success("Password updated successfully");
       setPasswordForm({
         currentPassword: "",
         newPassword: "",
@@ -234,10 +229,7 @@ export default function AccountSettings() {
       });
     } catch (error) {
       console.error("Error updating password:", error);
-      toast.error(
-        error.response?.data?.Error ||
-          t("settings.account.password.errors.updateFailed"),
-      );
+      toast.error(error.response?.data?.Error || "Failed to update password");
     } finally {
       setLoading(false);
     }
@@ -245,17 +237,17 @@ export default function AccountSettings() {
 
   const handleCreateAdmin = async () => {
     if (newAdminForm.password !== newAdminForm.confirmPassword) {
-      toast.error(t("settings.account.dangerZone.errors.noMatch"));
+      toast.error("Passwords do not match");
       return;
     }
 
     if (newAdminForm.password.length < 6) {
-      toast.error(t("settings.account.dangerZone.errors.tooShort"));
+      toast.error("Password must be at least 6 characters");
       return;
     }
 
     if (!newAdminForm.email || !newAdminForm.password) {
-      toast.error(t("settings.account.dangerZone.errors.fillFields"));
+      toast.error("Please fill in all fields");
       return;
     }
 
@@ -266,7 +258,7 @@ export default function AccountSettings() {
         password: newAdminForm.password,
         confirmPassword: newAdminForm.confirmPassword,
       });
-      toast.success(t("settings.account.dangerZone.success"));
+      toast.success("Admin account created successfully");
       setNewAdminForm({ email: "", password: "", confirmPassword: "" });
       setShowCreateDialog(false);
 
@@ -275,8 +267,7 @@ export default function AccountSettings() {
     } catch (error) {
       console.error("Error creating admin:", error);
       toast.error(
-        error.response?.data?.Error ||
-          t("settings.account.dangerZone.errors.createFailed"),
+        error.response?.data?.Error || "Failed to create admin account",
       );
     } finally {
       setLoading(false);
@@ -293,12 +284,12 @@ export default function AccountSettings() {
           className="gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
-          {t("settings.account.backButton")}
+          Back
         </Button>
       </div>
 
       <div className="mb-6">
-        <h3 className="text-2xl font-bold">{t("settings.account.title")}</h3>
+        <h3 className="text-2xl font-bold">Account Settings</h3>
         <p className="text-sm text-muted-foreground mt-1">
           Manage your admin account email and password
         </p>
@@ -310,18 +301,14 @@ export default function AccountSettings() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Mail className="h-5 w-5 text-blue-600" />
-              <CardTitle>{t("settings.account.email.title")}</CardTitle>
+              <CardTitle>Email Address</CardTitle>
             </div>
-            <CardDescription>
-              {t("settings.account.email.description")}
-            </CardDescription>
+            <CardDescription>Change your email address</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleEmailChange} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="currentEmail">
-                  {t("settings.account.email.currentEmail")} *
-                </Label>
+                <Label htmlFor="currentEmail">Current Email *</Label>
                 <Input
                   id="currentEmail"
                   type="email"
@@ -334,9 +321,7 @@ export default function AccountSettings() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="newEmail">
-                  {t("settings.account.email.newEmail")} *
-                </Label>
+                <Label htmlFor="newEmail">New Email *</Label>
                 <Input
                   id="newEmail"
                   type="email"
@@ -349,9 +334,7 @@ export default function AccountSettings() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmEmail">
-                  {t("settings.account.email.confirmEmail")} *
-                </Label>
+                <Label htmlFor="confirmEmail">Confirm Email *</Label>
                 <Input
                   id="confirmEmail"
                   type="email"
@@ -365,7 +348,7 @@ export default function AccountSettings() {
               </div>
               <Button type="submit" disabled={loading} className="w-full">
                 <Save className="h-4 w-4 mr-2" />
-                {loading ? "Updating..." : t("settings.account.email.save")}
+                {loading ? "Updating..." : "Update Email"}
               </Button>
             </form>
           </CardContent>
@@ -376,18 +359,14 @@ export default function AccountSettings() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Lock className="h-5 w-5 text-purple-600" />
-              <CardTitle>{t("settings.account.password.title")}</CardTitle>
+              <CardTitle>Password</CardTitle>
             </div>
-            <CardDescription>
-              {t("settings.account.password.description")}
-            </CardDescription>
+            <CardDescription>Change your password</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handlePasswordChange} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">
-                  {t("settings.account.password.currentPassword")} *
-                </Label>
+                <Label htmlFor="currentPassword">Current Password *</Label>
                 <Input
                   id="currentPassword"
                   type="password"
@@ -403,9 +382,7 @@ export default function AccountSettings() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="newPassword">
-                  {t("settings.account.password.newPassword")} *
-                </Label>
+                <Label htmlFor="newPassword">New Password *</Label>
                 <Input
                   id="newPassword"
                   type="password"
@@ -425,9 +402,7 @@ export default function AccountSettings() {
                 </p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">
-                  {t("settings.account.password.confirmPassword")} *
-                </Label>
+                <Label htmlFor="confirmPassword">Confirm Password *</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -445,7 +420,7 @@ export default function AccountSettings() {
               </div>
               <Button type="submit" disabled={loading} className="w-full">
                 <Save className="h-4 w-4 mr-2" />
-                {loading ? "Updating..." : t("settings.account.password.save")}
+                {loading ? "Updating..." : "Update Password"}
               </Button>
             </form>
           </CardContent>
@@ -456,13 +431,9 @@ export default function AccountSettings() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-red-600" />
-              <CardTitle className="text-red-600">
-                {t("settings.account.dangerZone.title")}
-              </CardTitle>
+              <CardTitle className="text-red-600">Danger Zone</CardTitle>
             </div>
-            <CardDescription>
-              {t("settings.account.dangerZone.description")}
-            </CardDescription>
+            <CardDescription>Create new administrator accounts</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-lg border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/20 p-4">
@@ -470,10 +441,11 @@ export default function AccountSettings() {
                 <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
                 <div className="flex-1">
                   <h4 className="font-semibold text-red-900 dark:text-red-400 mb-1">
-                    {t("settings.account.dangerZone.warningTitle")}
+                    Caution
                   </h4>
                   <p className="text-sm text-red-800 dark:text-red-400/80">
-                    {t("settings.account.dangerZone.warningMessage")}
+                    Creating a new admin account grants full system access. Only
+                    add trusted users.
                   </p>
                 </div>
               </div>
@@ -485,25 +457,24 @@ export default function AccountSettings() {
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" className="w-full">
                     <UserPlus className="h-4 w-4 mr-2" />
-                    {t("settings.account.dangerZone.createButton")}
+                    Create Admin Account
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle className="flex items-center gap-2">
                       <AlertTriangle className="h-5 w-5 text-red-600" />
-                      {t("settings.account.dangerZone.dialogTitle")}
+                      Create New Admin Account
                     </AlertDialogTitle>
                     <AlertDialogDescription className="space-y-4">
                       <p className="text-red-600 dark:text-red-400 font-medium">
-                        {t("settings.account.dangerZone.dialogWarning")}
+                        Are you sure? This will create a new administrator
+                        account with full access.
                       </p>
 
                       <div className="space-y-4 mt-4">
                         <div className="space-y-2">
-                          <Label htmlFor="newAdminEmail">
-                            {t("settings.account.dangerZone.email")} *
-                          </Label>
+                          <Label htmlFor="newAdminEmail">Email *</Label>
                           <Input
                             id="newAdminEmail"
                             type="email"
@@ -518,9 +489,7 @@ export default function AccountSettings() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="newAdminPassword">
-                            {t("settings.account.dangerZone.password")} *
-                          </Label>
+                          <Label htmlFor="newAdminPassword">Password *</Label>
                           <Input
                             id="newAdminPassword"
                             type="password"
@@ -535,12 +504,12 @@ export default function AccountSettings() {
                             minLength={6}
                           />
                           <p className="text-xs text-muted-foreground">
-                            {t("settings.account.dangerZone.passwordHint")}
+                            Must be at least 6 characters
                           </p>
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="newAdminConfirmPassword">
-                            {t("settings.account.dangerZone.confirmPassword")} *
+                            Confirm Password *
                           </Label>
                           <Input
                             id="newAdminConfirmPassword"
@@ -560,17 +529,13 @@ export default function AccountSettings() {
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>
-                      {t("settings.account.dangerZone.cancel")}
-                    </AlertDialogCancel>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={handleCreateAdmin}
                       disabled={loading}
                       className="bg-red-600 hover:bg-red-700"
                     >
-                      {loading
-                        ? t("settings.account.dangerZone.creating")
-                        : t("settings.account.dangerZone.create")}
+                      {loading ? "Creating..." : "Create"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -584,17 +549,15 @@ export default function AccountSettings() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5 text-indigo-600" />
-              <CardTitle>{t("settings.account.adminList.title")}</CardTitle>
+              <CardTitle>Administrators</CardTitle>
             </div>
-            <CardDescription>
-              {t("settings.account.adminList.description")}
-            </CardDescription>
+            <CardDescription>Manage administrator accounts</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {admins.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-8">
-                  {t("settings.account.adminList.noAdmins")}
+                  No administrators found
                 </p>
               ) : (
                 admins.map((admin) => {
@@ -612,7 +575,7 @@ export default function AccountSettings() {
                             {admin.email}
                             {isCurrentUser && (
                               <span className="ml-2 text-xs text-muted-foreground font-normal">
-                                {t("settings.account.adminList.currentUser")}
+                                (You)
                               </span>
                             )}
                           </p>
@@ -624,13 +587,11 @@ export default function AccountSettings() {
                                 : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
                             }
                           >
-                            {isActive
-                              ? t("settings.account.adminList.active")
-                              : t("settings.account.adminList.inactive")}
+                            {isActive ? "Active" : "Inactive"}
                           </Badge>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          {t("settings.account.adminList.createdOn")}{" "}
+                          Created on{" "}
                           {new Date(admin.created_at).toLocaleDateString()}
                         </p>
                       </div>
@@ -645,7 +606,7 @@ export default function AccountSettings() {
                               className="text-orange-600 hover:text-orange-700 hover:border-orange-300"
                             >
                               <ShieldOff className="h-4 w-4 mr-1" />
-                              {t("settings.account.adminList.disable")}
+                              Disable
                             </Button>
                           ) : (
                             <Button
@@ -655,7 +616,7 @@ export default function AccountSettings() {
                               className="text-green-600 hover:text-green-700 hover:border-green-300"
                             >
                               <Shield className="h-4 w-4 mr-1" />
-                              {t("settings.account.adminList.enable")}
+                              Enable
                             </Button>
                           )}
                           <Button
@@ -665,7 +626,7 @@ export default function AccountSettings() {
                             className="text-red-600 hover:text-red-700 hover:border-red-300"
                           >
                             <Trash2 className="h-4 w-4 mr-1" />
-                            {t("settings.account.adminList.delete")}
+                            Delete
                           </Button>
                         </div>
                       )}
@@ -684,23 +645,21 @@ export default function AccountSettings() {
           <AlertDialogHeader>
             <AlertDialogTitle>
               {actionType === "delete"
-                ? t("settings.account.adminList.confirmDelete")
+                ? "Delete Admin"
                 : actionType === "enable"
-                  ? t("settings.account.adminList.confirmEnable")
-                  : t("settings.account.adminList.confirmDisable")}
+                  ? "Enable Admin"
+                  : "Disable Admin"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {actionType === "delete"
-                ? t("settings.account.adminList.confirmDeleteMessage")
+                ? "Are you sure you want to delete this admin? This action cannot be undone."
                 : actionType === "enable"
-                  ? t("settings.account.adminList.confirmEnableMessage")
-                  : t("settings.account.adminList.confirmDisableMessage")}
+                  ? "Are you sure you want to enable this admin?"
+                  : "Are you sure you want to disable this admin?"}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>
-              {t("settings.account.adminList.cancel")}
-            </AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleAdminAction}
               disabled={loading}
@@ -712,9 +671,7 @@ export default function AccountSettings() {
                     : "bg-orange-600 hover:bg-orange-700"
               }
             >
-              {loading
-                ? "Processing..."
-                : t("settings.account.adminList.confirm")}
+              {loading ? "Processing..." : "Confirm"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
